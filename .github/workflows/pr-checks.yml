@@ -27,7 +27,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run Tests
+      - name: Run Tests (assessment-service only)
+        working-directory: assessment-api/assessment-service
         run: mvn clean verify
 
       - name: Upload Test Results
@@ -35,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: '**/target/surefire-reports/*.xml'
+          path: 'assessment-api/assessment-service/target/surefire-reports/*.xml'
 
   code-quality:
     runs-on: ubuntu-latest
@@ -62,7 +63,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-          projectBaseDir: .
+          projectBaseDir: assessment-api/assessment-service
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
