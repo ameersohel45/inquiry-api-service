@@ -33,10 +33,6 @@ jobs:
           cd knowledge-platform
           mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=org.sunbird -DCLOUD_STORE_ARTIFACT_ID=cloud-store-sdk_2.12 -DCLOUD_STORE_VERSION=1.4.6 -Pknowlg-core
 
-      - name: Build assessment-actors
-        working-directory: assessment-api/assessment-actors
-        run: mvn clean install -DskipTests
-
       - name: Run Tests (assessment-service only)
         working-directory: assessment-api/assessment-service
         run: mvn clean verify
