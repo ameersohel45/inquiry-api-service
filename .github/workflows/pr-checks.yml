@@ -27,6 +27,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Clone and build knowledge platform
+        run: |
+          git clone --branch branch-name https://github.com/your-org/knowledge-platform-repo.git
+          cd knowledge-platform-repo
+          mvn clean install -DskipTests -Pknowlg-core
+
       - name: Run Tests (assessment-service only)
         working-directory: assessment-api/assessment-service
         run: mvn clean verify
