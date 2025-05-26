@@ -73,7 +73,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           projectBaseDir: assessment-api/assessment-service
-          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
-          organization: ${{ secrets.SONAR_ORG }}
+          projectKey: ameersohel45_inquiry-api-service
+          organization: ameersohel45
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
