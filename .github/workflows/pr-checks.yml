@@ -29,7 +29,7 @@ jobs:
 
       - name: Clone and build knowledge platform
         run: |
-          git clone --branch branch-name https://github.com/Sunbird-Knowlg/knowledge-platform.git
+          git clone --branch release-5.6.0 https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform-repo
           mvn clean install -DskipTests -Pknowlg-core
 
