@@ -30,15 +30,22 @@ jobs:
       - name: Install yq
         run: sudo apt-get update && sudo apt-get install -y yq
 
-      - name: Determine Knowledge Platform branch
+      - name: Determine Knowledge Platform branch by base branch version
         id: kp-branch
         run: |
-          PR_BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}"
-          MAPPED_BRANCH=$(yq ".\"$PR_BRANCH\"" knowlg-core-branch-mapping.yml)
-          if [ "$MAPPED_BRANCH" = "null" ] || [ -z "$MAPPED_BRANCH" ]; then
-            MAPPED_BRANCH="main"
+          BASE_BRANCH="${{ github.base_ref }}"
+          VERSION=$(echo "$BASE_BRANCH" | grep -oP 'release-\K[0-9]+\.[0-9]+')
+          if [ -n "$VERSION" ]; then
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            if [ "$MAJOR" -ge 6 ]; then
+              KP_BRANCH="release-5.6.0"
+            else
+              KP_BRANCH="release-5.2.0"
+            fi
+          else
+            KP_BRANCH="main"
           fi
-          echo "branch=$MAPPED_BRANCH" >> $GITHUB_OUTPUT
+          echo "branch=$KP_BRANCH" >> $GITHUB_OUTPUT
 
       - name: Clone and build knowledge platform
         run: |
