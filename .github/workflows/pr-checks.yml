@@ -27,9 +27,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Install yq
+        run: sudo apt-get update && sudo apt-get install -y yq
+
+      - name: Determine Knowledge Platform branch
+        id: kp-branch
+        run: |
+          PR_BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}"
+          MAPPED_BRANCH=$(yq ".\"$PR_BRANCH\"" knowlg-core-branch-mapping.yml)
+          if [ "$MAPPED_BRANCH" = "null" ] || [ -z "$MAPPED_BRANCH" ]; then
+            MAPPED_BRANCH="main"
+          fi
+          echo "branch=$MAPPED_BRANCH" >> $GITHUB_OUTPUT
+
       - name: Clone and build knowledge platform
         run: |
-          git clone --branch release-5.6.0 https://github.com/Sunbird-Knowlg/knowledge-platform.git
+          git clone --branch ${{ steps.kp-branch.outputs.branch }} https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform
           mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{ secrets.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ secrets.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ secrets.CLOUD_STORE_VERSION }} -Pknowlg-core
 
