@@ -32,7 +32,6 @@ jobs:
           git clone --branch release-5.6.0 https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform
           mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=org.sunbird -DCLOUD_STORE_ARTIFACT_ID=cloud-store-sdk_2.12 -DCLOUD_STORE_VERSION=1.4.6 -Pknowlg-core
-
       - name: Build complete inquiry service
         run: mvn clean install -DskipTests=true
 
@@ -46,6 +45,15 @@ jobs:
         with:
           name: test-results
           path: 'assessment-api/assessment-service/target/surefire-reports/*.xml'
+
+      - name: Publish Test Results to PR
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          path: assessment-api/assessment-service/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
 
   code-quality:
     runs-on: ubuntu-latest
@@ -68,7 +76,6 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
       - name: SonarCloud Scan
         run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         working-directory: assessment-api/assessment-service
