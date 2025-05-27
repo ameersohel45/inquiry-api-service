@@ -44,7 +44,8 @@ jobs:
         run: |
           git clone --branch ${{ steps.kp-branch.outputs.branch }} https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform
-          mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{ secrets.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ secrets.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ secrets.CLOUD_STORE_VERSION }} -Pknowlg-core
+          export SCALA_VERSION=2.12.11
+          mvn clean install -DskipTests=true -Dscala.version=2.12.11 -DCLOUD_STORE_GROUP_ID=${{ secrets.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ secrets.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ secrets.CLOUD_STORE_VERSION }} -Pknowlg-core
 
       - name: Build complete inquiry service
         run: mvn clean install -DskipTests=true
