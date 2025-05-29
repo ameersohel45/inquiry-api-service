@@ -29,7 +29,7 @@ jobs:
 
       - name: Clone and build knowledge platform
         run: |
-          git clone --branch release-5.6.0_RC3 https://github.com/Sunbird-Knowlg/knowledge-platform.git
+          git clone --branch release-5.6.0 https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform
           mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{ secrets.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ secrets.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ secrets.CLOUD_STORE_VERSION }} -Pknowlg-core
 
