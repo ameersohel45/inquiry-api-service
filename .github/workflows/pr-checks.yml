@@ -36,9 +36,15 @@ jobs:
       - name: Build complete inquiry service
         run: mvn clean install -DskipTests=true
 
-      - name: Run Tests (assessment-service only)
+      - name: Run Tests and Generate Coverage Report
         working-directory: assessment-api/assessment-service
-        run: mvn clean verify
+        run: mvn clean verify jacoco:report
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: assessment-api/assessment-service/target/site/jacoco/index.html
 
       - name: Upload Test Results
         if: always()
@@ -77,6 +83,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
       - name: SonarCloud Scan
         run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         working-directory: assessment-api/assessment-service
