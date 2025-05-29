@@ -27,18 +27,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Clone and build knowledge platform
-        run: |
-          git clone --branch ${{ secrets.CORE_RELEASE_TAG }} https://github.com/Sunbird-Knowlg/knowledge-platform.git
-          cd knowledge-platform
-          mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{ secrets.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ secrets.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ secrets.CLOUD_STORE_VERSION }} -Pknowlg-core
-
       - name: Build complete inquiry service
         run: mvn clean install -DskipTests=true
 
-      - name: Run Tests and Generate Coverage Report
+      - name: Run Tests with JaCoCo Agent
+        run: |
+          java -javaagent:jacocoagent.jar=destfile=jacoco.exec -jar target/your-app.jar
         working-directory: assessment-api/assessment-service
-        run: mvn clean verify jacoco:report
+
+      - name: Generate JaCoCo Coverage Report
+        run: |
+          java -jar jacococli.jar report jacoco.exec \
+          --classfiles target/classes \
+          --sourcefiles src/main/java \
+          --html target/site/jacoco
+        working-directory: assessment-api/assessment-service
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4
