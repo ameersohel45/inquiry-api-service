@@ -87,5 +87,5 @@ jobs:
 
       - name: SonarCloud Scan
         run: |
-          mvn verify sonar:sonar -Dsonar.projectKey=ameersohel45_inquiry-api-service -Dsonar.organization=ameersohel45 -Dsonar.login=2a0c4994850e495bbb263932d14aed41ce8819ed -Dsonar.coverage.exclusions=**/CustomProblemHandler.java -Dsonar.scala.coverage.reportPaths=/home/sohel/sunbird-inquiry/inquiry-api-service/assessment-api/assessment-service/target/scoverage.xml -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED" -Dsonar.host.url=https://sonarcloud.io
+          mvn verify sonar:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.exclusions=**/CustomProblemHandler.java -Dsonar.scala.coverage.reportPaths=/home/sohel/sunbird-inquiry/inquiry-api-service/assessment-api/assessment-service/target/scoverage.xml -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED" -Dsonar.host.url=https://sonarcloud.io
         working-directory: assessment-api/assessment-service
