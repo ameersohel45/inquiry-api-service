@@ -40,12 +40,25 @@ jobs:
         working-directory: assessment-api/assessment-service
         run: mvn clean verify
 
-      - name: Upload Test Results
+      - name: Download JaCoCo CLI
+        run: |
+          curl -L -o jacoco-cli.zip https://github.com/jacoco/jacoco/releases/download/v0.8.10/jacoco-0.8.10.zip
+          unzip jacoco-cli.zip -d jacoco-cli
+
+      - name: Generate JaCoCo Coverage Report
+        run: |
+          java -jar jacoco-cli/lib/jacococli.jar report \
+          assessment-api/assessment-service/target/jacoco.exec \
+          --classfiles assessment-api/assessment-service/target/classes \
+          --sourcefiles assessment-api/assessment-service/src/main/java \
+          --xml assessment-api/assessment-service/target/site/jacoco/jacoco.xml
+
+      - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: 'assessment-api/assessment-service/target/surefire-reports/*.xml'
+          name: coverage-report
+          path: 'assessment-api/assessment-service/target/site/jacoco/jacoco.xml'
 
       - name: Publish Test Results to PR
         if: always()
@@ -77,6 +90,10 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Fetch full history
+        run: git fetch --unshallow
+
       - name: SonarCloud Scan
-        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751 -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=assessment-api/assessment-service/target/site/jacoco/jacoco.xml
         working-directory: assessment-api/assessment-service
