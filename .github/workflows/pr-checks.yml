@@ -40,6 +40,9 @@ jobs:
         working-directory: assessment-api/assessment-service
         run: mvn clean verify scoverage:report
 
+      - name: Debug Coverage Report
+        run: ls -l assessment-api/assessment-service/target
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -84,6 +87,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
 
       - name: SonarCloud Scan
         run: |
