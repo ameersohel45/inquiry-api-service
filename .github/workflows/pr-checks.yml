@@ -110,6 +110,6 @@ jobs:
             -Dsonar.organization=${{ secrets.SONAR_ORG }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.coverage.exclusions=**/CustomProblemHandler.java \
-            -Dsonar.scala.coverage.reportPaths=target/scoverage.xml \
+            -Dsonar.scala.coverage.reportPaths=/home/runner/work/inquiry-api-service/inquiry-api-service/assessment-api/assessment-service/target/scoverage.xml \
             -Dsonar.host.url=https://sonarcloud.io \
             -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
