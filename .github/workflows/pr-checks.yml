@@ -40,10 +40,6 @@ jobs:
         working-directory: assessment-api/assessment-service
         run: mvn clean verify
 
-      - name: Generate JaCoCo Coverage Report
-        working-directory: assessment-api/assessment-service
-        run: mvn verify
-
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -81,6 +77,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
       - name: SonarCloud Scan
         run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         working-directory: assessment-api/assessment-service
