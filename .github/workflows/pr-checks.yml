@@ -91,3 +91,5 @@ jobs:
             -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
         working-directory: assessment-api/assessment-service
 
+
+
