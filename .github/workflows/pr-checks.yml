@@ -91,6 +91,8 @@ jobs:
 
       - name: SonarCloud Scan
         run: |
-          mvn verify sonar:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.exclusions=**/CustomProblemHandler.java -Dsonar.scala.coverage.reportPaths=assessment-api/assessment-service/target/scoverage.xml -Dsonar.host.url=https://sonarcloud.io -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
+          mvn verify sonar:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.exclusions=**/CustomProblemHandler.java -Dsonar.scala.coverage.reportPaths=target/scoverage.xml -Dsonar.host.url=https://sonarcloud.io -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED" -Dsonar.sources=app   -Dsonar.tests=test
         working-directory: assessment-api/assessment-service
+
+
 
