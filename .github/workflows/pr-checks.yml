@@ -31,12 +31,7 @@ jobs:
       - name: Run Tests and Generate Coverage Report (assessment-service only)
         working-directory: assessment-api/assessment-service
         run: mvn clean verify scoverage:report
-      - name: Debug Coverage Report
-        run: |
-          echo "Checking coverage report location..."
-          ls -la assessment-api/assessment-service/target/
-          ls -la assessment-api/assessment-service/target/site/ || echo "No site directory"
-          ls -la assessment-api/assessment-service/target/site/scoverage/ || echo "No scoverage directory"
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -83,11 +78,7 @@ jobs:
         with:
           name: coverage-report
           path: assessment-api/assessment-service/target/
-      - name: Debug Downloaded Coverage
-        run: |
-          echo "Checking downloaded coverage files..."
-          ls -la assessment-api/assessment-service/target/
-          find assessment-api/assessment-service/target/ -name "*.xml" -type f
+
       - name: SonarCloud Scan
         run: |
           mvn verify sonar:sonar \
