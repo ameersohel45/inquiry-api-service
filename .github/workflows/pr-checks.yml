@@ -88,6 +88,8 @@ jobs:
             -Dsonar.coverage.exclusions=**/CustomProblemHandler.java \
             -Dsonar.scala.coverage.reportPaths=target/site/scoverage/scoverage.xml,target/scoverage.xml \
             -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.sources=app \
+            -Dsonar.tests=test \
             -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
         working-directory: assessment-api/assessment-service
 
