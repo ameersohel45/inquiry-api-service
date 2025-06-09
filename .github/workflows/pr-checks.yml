@@ -89,6 +89,7 @@ jobs:
           ls -la assessment-api/assessment-service/target/
           find assessment-api/assessment-service/target/ -name "*.xml" -type f
       - name: SonarCloud Scan
+        working-directory: assessment-api/assessment-service
         run: |
           mvn verify sonar:sonar \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
@@ -100,5 +101,5 @@ jobs:
             -Dsonar.sources=app \
             -Dsonar.tests=test \
             -DargLine="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
-        working-directory: assessment-api/assessment-service
+       
 
