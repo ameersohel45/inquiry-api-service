@@ -95,7 +95,7 @@ jobs:
             -Dsonar.organization=${{ secrets.SONAR_ORG }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.coverage.exclusions=**/CustomProblemHandler.java \
-            -Dsonar.scala.coverage.reportPaths=target/site/scoverage/scoverage.xml,target/scoverage.xml \
+            -Dsonar.scala.coverage.reportPaths=target/scoverage.xml \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=app \
             -Dsonar.tests=test \
