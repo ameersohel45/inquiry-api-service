@@ -30,9 +30,9 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Clone and build knowledge platform
         run: |
-          git clone --branch ${{ KNOWLG_CORE_RELEASE_TAG }} https://github.com/Sunbird-Knowlg/knowledge-platform.git
+          git clone --branch ${{ env.KNOWLG_CORE_RELEASE_TAG }} https://github.com/Sunbird-Knowlg/knowledge-platform.git
           cd knowledge-platform
-          mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ CLOUD_STORE_VERSION }} -Pknowlg-core
+          mvn clean install -DskipTests=true -DCLOUD_STORE_GROUP_ID=${{env.CLOUD_STORE_GROUP_ID }} -DCLOUD_STORE_ARTIFACT_ID=${{ env.CLOUD_STORE_ARTIFACT_ID }} -DCLOUD_STORE_VERSION=${{ env. CLOUD_STORE_VERSION }} -Pknowlg-core
       - name: Build complete inquiry service
         run: mvn clean install -DskipTests=true
       - name: Run Tests and Generate Coverage Report (assessment-service only)
@@ -89,8 +89,8 @@ jobs:
       - name: SonarCloud Scan
         run: |
           mvn verify sonar:sonar \
-            -Dsonar.projectKey=${{ SONAR_PROJECT_KEY }} \
-            -Dsonar.organization=${{SONAR_ORG_KEY}} \
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{env.SONAR_ORG_KEY}} \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.coverage.exclusions=**/CustomProblemHandler.java \
             -Dsonar.scala.coverage.reportPaths=target/site/scoverage/scoverage.xml,target/scoverage.xml \
